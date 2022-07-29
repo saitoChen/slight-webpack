@@ -10,6 +10,7 @@ import babelParser from '@babel/parser'
 import traverse from '@babel/traverse'
 import { fileURLToPath } from 'url'
 import path from 'path'
+import {transformFromAst} from '@babel/core'
 
 const fileName = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(fileName)
@@ -30,6 +31,10 @@ const createAsset = (path) => {
         ImportDeclaration({ node }) {
             deps.push(node.source.value)
         },
+    })
+
+    const {code} = transformFromAst(ast, null, {
+        presets: ['@babel/preset-env']
     })
 
     return {
@@ -124,3 +129,4 @@ const createGraph = (mainPath) => {
 }
 
 console.log(createGraph('./example/main.js'))
+
