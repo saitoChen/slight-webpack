@@ -1,4 +1,4 @@
-import entry from './components/index'
+import entry from './components/index.js'
 
 entry()
 
