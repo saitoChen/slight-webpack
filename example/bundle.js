@@ -6,31 +6,39 @@
 
 ((modules) => {
     
-    const require = (path) => {
-        
-        const fn = modules[path]
+    const require = (id) => {
+        debugger
+        const [fn, mapping] = modules[id]
     
         const module = {
             exports: {}
         }
     
-        fn(require, module, module.exports)
+        // mapping -> { './components/index.js': 1 }
+        const enforceRequire = (path) => {
+            const id = mapping[path]
+            return require(id)
+        }
+
+        fn(enforceRequire, module, module.exports)
     
         return module.exports
     
     }
     
-    require('./main.js')
+    require(0)
 })(
     {
-        './main.js': (require, module, exports) => {
+        0: [(require, module, exports) => {
             const { entry } = require('./components/index.js')
         
             entry()
             
             console.log('This is main.js')
-        },
-        './components/index.js': (require, module, exports) => {
+        }, { 
+            './components/index.js': 1 
+        }],
+        1: [(require, module, exports) => {
             const { getName } = require('./components/bar.js')
         
             getName()
@@ -42,8 +50,10 @@
             module.exports = {
                 entry
             }
-        },
-        './components/bar.js': (require, module, exports) => {
+        }, { 
+            './components/bar.js': 2 
+        }],
+        2: [(require, module, exports) => {
             const name = 'bar'
         
             const getName = () => name
@@ -51,6 +61,6 @@
             module.exports = {
                 getName
             }
-        }
+        }, {}]
     }
 )

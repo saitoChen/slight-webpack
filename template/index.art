@@ -1,0 +1,34 @@
+((modules) => {
+    
+    const require = (id) => {
+        debugger
+        const [fn, mapping] = modules[id]
+    
+        const module = {
+            exports: {}
+        }
+    
+        const enforceRequire = (path) => {
+            const id = mapping[path]
+            return require(id)
+        }
+
+        fn(enforceRequire, module, module.exports)
+    
+        return module.exports
+    
+    }
+    
+    require(0)
+})(
+    {
+        {{each data $module $index}}
+            {{@ $module.id}}: [
+                (require, module, exports) => {
+                    {{@ $module.code}}
+                },
+                {{@ $module.mapping | JSON.stringify}}
+            ],
+        {{/each}}
+    }
+)
