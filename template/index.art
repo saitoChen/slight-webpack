@@ -1,7 +1,6 @@
 ((modules) => {
     
     const require = (id) => {
-        debugger
         const [fn, mapping] = modules[id]
     
         const module = {

@@ -23,7 +23,7 @@ export const relativePathCount = (path) => {
     return path.match(relativePathCountReg).length
 }
 
-const generatePath = (basePath, targetPath) => {
+export const generatePath = (basePath, targetPath) => {
     return path.resolve(basePath, targetPath)
 }
 
@@ -33,13 +33,13 @@ export const traverseRelativePath = (currentPath, relativePath) => {
     // ../components/index.js -> ../components/index.js
     // ./components/index.js -> components/index.js
     const normalizeRelativePath = path.normalize(relativePath)
-    const currentPathIsFile = !!path.parse(currentPath).ext
+    // const currentPathIsFile = !!path.parse(currentPath).ext
     // const isRelativePathInSameFolder = !normalizeRelativePath.includes('..')
 
-    if (currentPathIsFile) {
-        // is currentPath and relativePath in same path
-        currentPath = getPathDir(currentPath)
-    }
+     // is currentPath and relativePath in same path
+    // if (currentPathIsFile) {
+    //     currentPath = getPathDir(currentPath)
+    // }
     return generatePath(currentPath, normalizeRelativePath)
 
 }
